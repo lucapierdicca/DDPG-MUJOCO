@@ -156,7 +156,7 @@ class DDPG():
 						break
 
 					
-				avg_epoch_rewards = avg_epoch_rewards + (ep_reward - avg_epoch_rewards)/n_epochs
+				#avg_epoch_rewards = avg_epoch_rewards + (ep_reward - avg_epoch_rewards)/n_epochs
 				n_epochs += 1
 
 				# Perform train
