@@ -84,9 +84,7 @@ class DDPG():
 		
 
 		# Main Loop
-	    plots = {'critic_loss':[],
-	             'actor_loss':[],
-	            'episode_reward':[]}
+		plots = {'critic_loss':[],'actor_loss':[],'episode_reward':[]}
 	    
 	    plots_dir = './plots/'
 	    weights_dir = './weights/'
