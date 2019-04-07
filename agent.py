@@ -165,7 +165,7 @@ class DDPG():
 				for t in range(self.parameters['num_train_steps']):
 					s_state, s_action, s_reward, s_next_state,s_terminal = self.memory.sample()
 					# Train actor critic model
-					critic_loss, actor_loss = self.actor_critic.update(sess=sess, filewriter=trainwriter, state_batch=s_state, next_state_batch=s_next_state, action_batch=s_action, reward_batch=s_reward,done_batch=s_terminal)
+					_,_,critic_loss,actor_loss = self.actor_critic.update(sess=sess, filewriter=trainwriter, state_batch=s_state, next_state_batch=s_next_state, action_batch=s_action, reward_batch=s_reward,done_batch=s_terminal)
 					avg_critic_loss+=critic_loss
 					avg_actor_loss+=actor_loss
 					

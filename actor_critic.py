@@ -34,8 +34,8 @@ class ActorCritic():
 		self.actor_copy_tensors, self.critic_copy_tensors = self._build_copy_ops()
 
 		# Update operations
-		self.critic_optimizer,self.critic_loss_summary = self._build_critic_train_ops()
-		self.actor_optimizer, self.actor_loss_summary = self._build_actor_train_ops()
+		self.critic_optimizer, self.critic_loss_summary, self.critic_loss = self._build_critic_train_ops()
+		self.actor_optimizer, self.actor_loss_summary, self.actor_loss = self._build_actor_train_ops()
 
 	def _build_actor(self,scope,reuse=None):
 		# Build tensorflow graph for actor
@@ -83,7 +83,7 @@ class ActorCritic():
 		mse = tf.losses.mean_squared_error(labels=self.target_placeholder,predictions=self.critic_model)
 		critic_loss_summary = tf.summary.scalar("critic_loss",mse)
 		mse += tf.reduce_sum(tf.get_collection(tf.GraphKeys.REGULARIZATION_LOSSES))
-		return tf.train.AdamOptimizer(self.critic_lr).minimize(mse,var_list=self._get_weights("critic")),critic_loss_summary
+		return tf.train.AdamOptimizer(self.critic_lr).minimize(mse,var_list=self._get_weights("critic")), critic_loss_summary, mse
 
 	def _build_actor_train_ops(self):
 		# Calculates and applies the gradients to the actor model
@@ -94,7 +94,7 @@ class ActorCritic():
 		model_grads = tf.gradients(critic_loss, actor_weights)
 		grads_weights = zip(model_grads,actor_weights)
 		optimize = tf.train.AdamOptimizer(learning_rate=self.actor_lr).apply_gradients(grads_weights)
-		return optimize, actor_loss_summary
+		return optimize, actor_loss_summary, critic_loss
 
 	def pi(self,sess,state):
 		# Maps state to action
@@ -113,13 +113,13 @@ class ActorCritic():
 		targets = reward_batch + (1-done_batch) * self.gamma * Q_next[...,0]
 
 		# Update critic
-		_,critic_loss = sess.run([self.critic_optimizer,self.critic_loss_summary],feed_dict={self.state_placeholder:state_batch,self.action_placeholder:action_batch,self.target_placeholder:targets[:,None]})
-		filewriter.add_summary(critic_loss,tf.train.global_step(sess,tf.train.get_global_step(graph=sess.graph)))
+		_,critic_loss_tb, critic_loss = sess.run([self.critic_optimizer,self.critic_loss_summary, self.critic_loss],feed_dict={self.state_placeholder:state_batch,self.action_placeholder:action_batch,self.target_placeholder:targets[:,None]})
+		filewriter.add_summary(critic_loss_tb,tf.train.global_step(sess,tf.train.get_global_step(graph=sess.graph)))
 		# Update actor using policy gradient and copy tensors
-		_,actor_loss = sess.run([self.actor_optimizer,self.actor_loss_summary],feed_dict={self.state_placeholder:state_batch})
-		filewriter.add_summary(actor_loss,tf.train.global_step(sess,tf.train.get_global_step(graph=sess.graph)))
+		_,actor_loss_tb, actor_loss = sess.run([self.actor_optimizer,self.actor_loss_summary,self.actor_loss],feed_dict={self.state_placeholder:state_batch})
+		filewriter.add_summary(actor_loss_tb,tf.train.global_step(sess,tf.train.get_global_step(graph=sess.graph)))
 		
 		# Update stationary targets
 		sess.run([self.actor_copy_tensors, self.critic_copy_tensors])
 
-		return critic_loss, actor_loss
+		return critic_loss_tb, actor_loss_tb, critic_loss, actor_loss
