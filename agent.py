@@ -8,6 +8,7 @@ import tensorflow as tf
 import os
 from gym.wrappers import Monitor
 import roboschool
+import pickle
 
 
 class DDPG():
@@ -180,7 +181,7 @@ class DDPG():
 					.format(i+1, int(ep_reward), avg_critic_loss, avg_actor_loss, e+1, ep_n_action, cumu_step))
 
 				if e % 19 == 0:
-					save_path = saver.save(sess, weights_dir+self.parameters['env']+'/model.ckpt', global_step=i+j+1)
+					save_path = saver.save(sess, weights_dir+self.parameters['env']+'/model.ckpt', global_step=i*e+1)
 
 				plots['episode_reward'].append(ep_reward)
 				plots['critic_loss'].append(critic_loss)
