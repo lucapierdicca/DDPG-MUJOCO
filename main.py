@@ -16,7 +16,7 @@ def main():
 		'batch_size':64,
 		'render_train':True,
 		'restore':False,
-		'env':'Hopper-v2'
+		'env':'RoboschoolHopper-v1_kirkiles_train50episode_noise_norm_bufsize1Mi1k'
 	}
 	
 	agent = DDPG(params)

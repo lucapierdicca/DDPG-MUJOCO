@@ -8,6 +8,7 @@ import tensorflow as tf
 import os
 from gym.wrappers import Monitor
 from terminaltables import AsciiTable
+import roboschool
 
 
 class DDPG():
