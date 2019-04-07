@@ -15,7 +15,7 @@ class DDPG():
 	def __init__(self,parameters):
 		
 		self.parameters = parameters
-		self.env = gym.make(self.parameters['env']) 
+		self.env = gym.make(self.parameters['env'][:args['env'].find('_')])
 		self.nA = self.env.action_space.sample().shape[0]
 		self.state_size = self.env.reset().shape[0]
 
