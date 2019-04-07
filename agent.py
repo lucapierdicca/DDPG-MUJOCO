@@ -173,7 +173,7 @@ class DDPG():
 					sess.run(increment_global_step)
 
 				avg_critic_loss /= self.parameters['num_train_steps']
-                avg_actor_loss /= self.parameters['num_train_steps']
+				avg_actor_loss /= self.parameters['num_train_steps']
 
 
 
