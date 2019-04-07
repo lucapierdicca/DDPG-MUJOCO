@@ -99,7 +99,7 @@ class DDPG():
 		saver.export_meta_graph(graph_dir+self.parameters['env']+'/graph.meta')
 
 	    #cumulative step counter
-	    cumu_step = 0
+		cumu_step = 0
 		
 		for i in range(self.parameters['num_epochs']):
 
