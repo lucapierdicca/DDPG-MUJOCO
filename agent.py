@@ -86,17 +86,17 @@ class DDPG():
 		# Main Loop
 		plots = {'critic_loss':[],'actor_loss':[],'episode_reward':[]}
 	    
-	    plots_dir = './plots/'
-	    weights_dir = './weights/'
-	    graph_dir = './graph/'
-	    if not os.path.exists(plots_dir):
-	        os.makedirs(plots_dir)
-	   	if not os.path.exists(weights_dir):
-	        os.makedirs(weights_dir)
-	   	if not os.path.exists(graph_dir):
-	        os.makedirs(graph_dir)
+		plots_dir = './plots/'
+		weights_dir = './weights/'
+		graph_dir = './graph/'
+		if not os.path.exists(plots_dir):
+			os.makedirs(plots_dir)
+		if not os.path.exists(weights_dir):
+			os.makedirs(weights_dir)
+		if not os.path.exists(graph_dir):
+			os.makedirs(graph_dir)
 
-	    saver.export_meta_graph(graph_dir+self.parameters['env']+'/graph.meta')
+		saver.export_meta_graph(graph_dir+self.parameters['env']+'/graph.meta')
 
 	    #cumulative step counter
 	    cumu_step = 0
@@ -177,17 +177,17 @@ class DDPG():
 
 
 
-				print('Epoch: {:d}| Avg_Epoch_Reward: {:d} | Episode: {:d} | Episode_reward: {:d} | Episode_len: {:d}'\
-					.format(i+1, int(avg_epoch_rewards), e+1, int(ep_reward), ep_n_action))
+				print('Epoch: {:d} | Reward: {:d} | Avg_Q_loss: {:.4f} | Avg_a_loss: {:.4f} | Episode: {:d} | Step: {:d} | Cumu Step: {:d}'\
+					.format(i+1, int(ep_reward), avg_critic_loss, avg_actor_loss, e+1, ep_n_action, cumu_step))
 
 				if e % 19 == 0:
 					save_path = saver.save(sess, weights_dir+self.parameters['env']+'/model.ckpt', global_step=i+j+1)
 
-		        plots['episode_reward'].append(ep_reward)
-		        plots['critic_loss'].append(critic_loss)
-		        plots['actor_loss'].append(critic_loss)
+				plots['episode_reward'].append(ep_reward)
+				plots['critic_loss'].append(critic_loss)
+				plots['actor_loss'].append(critic_loss)
 
-		        pickle.dump(plots, open(plots_dir+self.parameters['env']+'_plot.pickle','wb'))
+				pickle.dump(plots, open(plots_dir+self.parameters['env']+'_plot.pickle','wb'))
 
 
 
