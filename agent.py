@@ -162,7 +162,7 @@ class DDPG():
 
 				# Perform train
 				avg_critic_loss = 0.0
-            	avg_actor_loss = 0.0
+				avg_actor_loss = 0.0
 				for t in range(self.parameters['num_train_steps']):
 					s_state, s_action, s_reward, s_next_state,s_terminal = self.memory.sample()
 					# Train actor critic model
