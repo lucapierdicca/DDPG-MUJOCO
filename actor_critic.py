@@ -121,3 +121,5 @@ class ActorCritic():
 		
 		# Update stationary targets
 		sess.run([self.actor_copy_tensors, self.critic_copy_tensors])
+
+		return critic_loss, actor_loss

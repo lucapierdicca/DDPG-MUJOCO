@@ -14,14 +14,14 @@ def main():
 		'num_train_steps':50,
 		'replay_init_size':1000,
 		'batch_size':64,
-		'render_train':False,
+		'render_train':True,
 		'restore':False,
-		'env':'HalfCheetah-v2'
+		'env':'Hopper-v2'
 	}
 	
 	agent = DDPG(params)
-	#agent.train()
-	agent.test()
+	agent.train()
+	#agent.test()
 
 if __name__ == "__main__":
 	main()
