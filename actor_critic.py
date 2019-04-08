@@ -82,7 +82,8 @@ class ActorCritic():
 		# Build train operation for critic. This operation must take states, actions, and rewards from sampled batch. 
 		mse = tf.losses.mean_squared_error(labels=self.target_placeholder,predictions=self.critic_model)
 		critic_loss_summary = tf.summary.scalar("critic_loss",mse)
-		mse += tf.reduce_sum(tf.get_collection(tf.GraphKeys.REGULARIZATION_LOSSES))
+		#regularization factor
+		mse = mse+tf.reduce_sum(tf.get_collection(tf.GraphKeys.REGULARIZATION_LOSSES))
 		return tf.train.AdamOptimizer(self.critic_lr).minimize(mse,var_list=self._get_weights("critic")), critic_loss_summary, mse
 
 	def _build_actor_train_ops(self):

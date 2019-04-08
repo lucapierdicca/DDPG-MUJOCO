@@ -8,15 +8,15 @@ def main():
 		'gamma':0.99,
 		'tau':0.001,
 		'sigma':0.2,
-		'num_epochs':500,
+		'num_epochs':275,
 		'num_episodes':20,
 		'replay_size':1000000,
-		'num_train_steps':50,
+		'num_train_steps':1,
 		'replay_init_size':1000,
 		'batch_size':64,
 		'render_train':False,
 		'restore':False,
-		'env':'RoboschoolHopper-v1_kirkiles_train50episode_noise_norm_bufsize1Mi1k'
+		'env':'Hopper-v2_kirkiles_train1step_noise_norm_bufsize1Mi1k'
 	}
 	
 	agent = DDPG(params)
